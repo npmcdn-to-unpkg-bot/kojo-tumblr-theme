@@ -4,7 +4,6 @@
         <meta name="author" content="Raymond Ta" />
         <meta name="color:Accent" content="#ef5350" />
         <meta name="color:Background Color" content="#fff5e6" />
-        <meta name="if:Endless Scrolling" content="0">
         <meta name="if:Ask Link" content="0" />
         <meta name="if:Archive Link" content="0" />
         
@@ -76,14 +75,20 @@
                 color: {color:Accent};
                 text-decoration: none;
             }
+                a.my-title-link {
+                    font-size: 15px;
+                }
             ol.notes li {
                 list-style-type: none;
+            }
+            .my-footer-div {
+                display: none;
             }
         </style>
         <!--Inifnite Scroll http://www.infinite-scroll.com/-->
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-infinitescroll/2.0b2.120519/jquery.infinitescroll.min.js"></script>
         <!--imagesLoaded http://imagesloaded.desandro.com/-->
-        <script src="https://npmcdn.com/imagesloaded@4.1/imagesloaded.pkgd.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.0/imagesloaded.min.js"></script>
     </head>
     <body>
         <div class="container-fluid">
@@ -96,16 +101,14 @@
                                <br />
                                <br />
                            {/block:ShowAvatar}
-                           <b><a href="{BlogURL}">{Title}</a></b>{block:IfAskLink}&nbsp;|&nbsp;<a href="/ask">{AskLabel}</a>{/block:IfAskLink}{block:IfArchiveLink}&nbsp;|&nbsp;<a href="/archive">Archive</a>{/block:IfArchiveLink}
-                           {block:IfNotEndlessScrolling}
-                               <div class="my-footer-div">
-                                    {block:PreviousPage}
-                                        <a href="{PreviousPage}">&larr;</a>
-                                    {/block:PreviousPage}{block:NextPage}
-                                        <a href="{NextPage}" class="my-next">&rarr;</a>
-                                    {/block:NextPage}
-                               </div>
-                           {/block:IfNotEndlessScrolling}
+                           <b><a href="{BlogURL}" class="my-title-link">{Title}</a></b>{block:IfAskLink}&nbsp;|&nbsp;<a href="/ask">{AskLabel}</a>{/block:IfAskLink}{block:IfArchiveLink}&nbsp;|&nbsp;<a href="/archive">Archive</a>{/block:IfArchiveLink}
+                           <div class="my-footer-div">
+                                {block:PreviousPage}
+                                    <a href="{PreviousPage}">&larr;</a>
+                                {/block:PreviousPage}{block:NextPage}
+                                    <a href="{NextPage}" class="my-next">&rarr;</a>
+                                {/block:NextPage}
+                           </div>
                        </div>
                        {block:Description}
                            <div class="my-description">
@@ -201,33 +204,26 @@
                       itemSelector: '.masonryDiv' 
                    });
                 });
+                myContainer.infinitescroll({
+                    navSelector  : "div.my-footer-div",
+                    nextSelector : ".my-footer-div a.my-next",
+                    itemSelector : ".masonryDiv",
+                    loading: {
+                        finishedMsg: 'No more pages to load.'
+                        }
+                    },
+                    function( newElements ) {
+                        var $newElems = $( newElements ).css({ opacity: 0 });
+                        $newElems.imagesLoaded(function(){
+                            $newElems.animate({ opacity: 1 });
+                            myContainer.masonry( 'appended', $newElems, true );
+                        });
+                }); 
             });
             function MyOpenInNewTab(url) {
                 var win = window.open(url, '_blank');
                 win.focus();
             }
         </script>
-        {block:IfEndlessScrolling}
-            <script>
-                $(function () {
-                    var myContainer = $('#myContainer');
-                    myContainer.infinitescroll({
-                        navSelector  : "div.my-footer-div",
-                        nextSelector : ".my-footer-div a.my-next",
-                        itemSelector : ".masonryDiv",
-                        loading: {
-                            finishedMsg: 'No more pages to load.'
-                            }
-                        },
-                        function( newElements ) {
-                            var $newElems = $( newElements ).css({ opacity: 0 });
-                            $newElems.imagesLoaded(function(){
-                                $newElems.animate({ opacity: 1 });
-                                myContainer.masonry( 'appended', $newElems, true );
-                            });
-                    }); 
-                });
-            </script>
-        {/block:IfEndlessScrolling}
     </body>
 </html>
