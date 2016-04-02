@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="author" content="Raymond Ta" />
+        <meta name="color:Accent" content="#ef5350" />
+        <meta name="color:Background Color" content="#fff5e6" />
+        <meta name="if:Endless Scrolling" content="0">
+        <meta name="if:Ask Link" content="0" />
+        <meta name="if:Archive Link" content="0" />
+        
+        <!--jQuery CDN-->
+        <script src="https://code.jquery.com/jquery-1.12.2.min.js"></script>
+        <!--Masonry JS http://masonry.desandro.com/-->
+        <script src="https://npmcdn.com/masonry-layout@4.0/dist/masonry.pkgd.min.js"></script>
+        <!-- Latest compiled and minified CSS for bootstrap-->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+        <!-- Latest compiled and minified JavaScript for bootstrap-->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+        <style>
+            .my-postmeta a {
+                color: grey;
+                font-style: italic;
+                font-size: 10px;
+            }
+            .my-title-block {
+                margin-top: 20px;
+                margin-left: 8px;
+                width: 100%;
+            }
+            .valign-col {
+                margin-top: 25%;
+            }
+            .my-title {
+                color: {color:Accent};
+                font-size: 15px;
+                padding-bottom: 10px;
+                border-bottom: dashed {color:Accent} 3px;
+            }
+                .my-title a {
+                    font-size: 13px;
+                    text-decoration: none;
+                    color: {color:Accent};
+                }
+            body {
+                background-color: {color:Background Color};
+            }
+            .masonryDiv {
+                padding: 8px;
+                margin: 7px;
+                display: block;
+                box-shadow: 1px 1px 5px grey;
+                background-color: white;
+                max-width: 500px;
+            }
+            .my-textpost {
+                margin: -8px;
+                position: absolute;
+                width: 100px;
+                height: 100px;
+            }
+            .my-top-row {
+                margin-bottom: 15px;
+            }
+            .my-reblog-text {
+                font: 10px;
+                text-decoration: none;
+            }
+            .my-description {
+                padding-top: 10px;  
+            }
+                .my-description p {
+                    font-size: 13px;
+                    color: {color:Accent};
+                }
+            a {
+                color: {color:Accent};
+                text-decoration: none;
+            }
+            ol.notes li {
+                list-style-type: none;
+            }
+        </style>
+        <!--Inifnite Scroll http://www.infinite-scroll.com/-->
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-infinitescroll/2.0b2.120519/jquery.infinitescroll.min.js"></script>
+        <!--imagesLoaded http://imagesloaded.desandro.com/-->
+        <script src="https://npmcdn.com/imagesloaded@4.1/imagesloaded.pkgd.min.js"></script>
+    </head>
+    <body>
+        <div class="container-fluid">
+           <div class="row">
+               <div class="col-sm-2 valign-col">
+                   <div class="my-title-block text-center">
+                       <div class="my-title">
+                           {block:ShowAvatar}
+                              <img src="{PortraitURL-64}" />
+                               <br />
+                               <br />
+                           {/block:ShowAvatar}
+                           <b><a href="{BlogURL}">{Title}</a></b>{block:IfAskLink}&nbsp;|&nbsp;<a href="/ask">{AskLabel}</a>{/block:IfAskLink}{block:IfArchiveLink}&nbsp;|&nbsp;<a href="/archive">Archive</a>{/block:IfArchiveLink}
+                           {block:IfNotEndlessScrolling}
+                               <div class="my-footer-div">
+                                    {block:PreviousPage}
+                                        <a href="{PreviousPage}">&larr;</a>
+                                    {/block:PreviousPage}{block:NextPage}
+                                        <a href="{NextPage}" class="my-next">&rarr;</a>
+                                    {/block:NextPage}
+                               </div>
+                           {/block:IfNotEndlessScrolling}
+                       </div>
+                       {block:Description}
+                           <div class="my-description">
+                               <p>{Description}</p>
+                           </div>
+                       {/block:Description}
+                   </div>
+               </div>
+               <div id="myContainer" class="col-sm-10">
+                   {block:Posts}
+                       <div class="masonryDiv">
+                            {block:Photo}
+                                    {LinkOpenTag}
+                                        <img src="{PhotoURL-400}" alt="{PhotoAlt}" />
+                                    {LinkCloseTag}
+                                    {block:Caption}<p>{Caption}</p>{/block:Caption}
+                                    <div class="my-postmeta">{block:Date}<a href="{Permalink}">{TimeAgo}</a>&nbsp; {/block:Date}<a href="{Permalink}" style="text-transform:lowercase;">{lang:Notes} ({NoteCount})</a></div>
+                            {/block:Photo}
+                            {block:Photoset}
+                               <div class="my-photoset-overlay" onclick="MyOpenInNewTab('{Permalink}')">
+                               </div>
+                                <div>
+                                    {Photoset-400}
+                                </div>
+                                {block:Caption}<p>{Caption}</p>{/block:Caption}
+                                <div class="my-postmeta">{block:Date}<a href="{Permalink}">{TimeAgo}</a>&nbsp; {/block:Date}<a href="{Permalink}" style="text-transform:lowercase;">{lang:Notes} ({NoteCount})</a></div>
+                            {/block:Photoset}
+                            {block:Text}
+                               {block:Title}
+                                   <h4>{Title}</h4>
+                               {/block:Title}
+                               <p>{Body}</p>
+                               <div class="my-postmeta">{block:Date}<a href="{Permalink}">{TimeAgo}</a>&nbsp; {/block:Date}<a href="{Permalink}" style="text-transform:lowercase;">{lang:Notes} ({NoteCount})</a></div>
+                            {/block:Text}
+                            {block:Video}
+                                {Video-500}
+                                {block:Caption}<p>{Caption}</p>{/block:Caption}
+                                <div class="my-postmeta">{block:Date}<a href="{Permalink}">{TimeAgo}</a>&nbsp; {/block:Date}<a href="{Permalink}" style="text-transform:lowercase;">{lang:Notes} ({NoteCount})</a></div>
+                            {/block:Video}
+                            {block:Audio}
+                                {block:AlbumArt}
+                                {/block:AlbumArt}
+                                <div class="audio">
+                                    {AudioPlayerGrey}
+                                    <small>{PlayCountWithLabel}{block:ExternalAudio}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="{ExternalAudioURL}">{lang:Download} <div class="download"></div></a>{/block:ExternalAudio}</small>
+                                    {block:Caption}<p>{Caption}</p>{/block:Caption}
+                                </div>
+                            {/block:Audio}
+                            {block:Link}
+                                <h4><a href="{URL}" {Target}>{Name} <span>&rarr;</span></a></h4>
+                                <div class="my-postmeta">{block:Date}<a href="{Permalink}">{TimeAgo}</a>&nbsp; {/block:Date}<a href="{Permalink}" style="text-transform:lowercase;">{lang:Notes} ({NoteCount})</a></div>
+                            {block:Description}<p>{Description}</p>{/block:Description}
+                            {/block:Link}
+                            {block:Quote}
+                                <h4>"{Quote}"</h4>
+                                {block:Source}
+                                    <p>{Source}</p>
+                                {/block:Source}
+                                <div class="my-postmeta">{block:Date}<a href="{Permalink}">{TimeAgo}</a>&nbsp; {/block:Date}<a href="{Permalink}" style="text-transform:lowercase;">{lang:Notes} ({NoteCount})</a></div>
+                            {/block:Quote}
+                            {block:Chat}
+                                {block:Title}<h4><a href="{Permalink}">{Title}</a></h4>{/block:Title}
+                                <table class="chat" cellspacing="0">
+                                  {block:Lines}
+                                      <tr>
+                                        {block:Label}<td class="name line{UserNumber}">{Label}</td>{block:Label}<td class="words line{UserNumber}">{Line}</td>
+                                      </tr>
+                                  {/block:Lines}
+                                </table>
+                            <div class="my-postmeta">{block:Date}<a href="{Permalink}">{TimeAgo}</a>&nbsp; {/block:Date}<a href="{Permalink}" style="text-transform:lowercase;">{lang:Notes} ({NoteCount})</a></div>
+                            {/block:Chat}
+                           {block:PermalinkPage}
+                                {block:PermalinkPagination}
+                                    <div class="navigation permalink">
+                                        <div class="links">
+                                            {block:PreviousPost}<a href="{PreviousPost}" class="right">Previous</a>{/block:PreviousPost}
+                                            {block:NextPost}<a href="{NextPost}" class="left">Next</a>{/block:NextPost}
+                                        </div>
+                                    </div>
+                                {/block:PermalinkPagination}
+                               {PostNotes}
+                           {/block:PermalinkPage}
+                       </div>
+                   {/block:Posts}
+               </div>
+           </div>
+        </div>
+        <script>
+            $(function () {
+               var myContainer = $('#myContainer');
+                myContainer.imagesLoaded(function () {
+                   myContainer.masonry({
+                      itemSelector: '.masonryDiv' 
+                   });
+                });
+            });
+            function MyOpenInNewTab(url) {
+                var win = window.open(url, '_blank');
+                win.focus();
+            }
+        </script>
+        {block:IfEndlessScrolling}
+            <script>
+                $(function () {
+                    var myContainer = $('#myContainer');
+                    myContainer.infinitescroll({
+                        navSelector  : "div.my-footer-div",
+                        nextSelector : ".my-footer-div a.my-next",
+                        itemSelector : ".masonryDiv",
+                        loading: {
+                            finishedMsg: 'No more pages to load.'
+                            }
+                        },
+                        function( newElements ) {
+                            var $newElems = $( newElements ).css({ opacity: 0 });
+                            $newElems.imagesLoaded(function(){
+                                $newElems.animate({ opacity: 1 });
+                                myContainer.masonry( 'appended', $newElems, true );
+                            });
+                    }); 
+                });
+            </script>
+        {/block:IfEndlessScrolling}
+    </body>
+</html>
