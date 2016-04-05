@@ -86,6 +86,9 @@
             .my-footer-div {
                 display: none;
             }
+            .my-tag-link {
+                font-size: 10px;
+            }
         </style>
         <!--Inifnite Scroll http://www.infinite-scroll.com/-->
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-infinitescroll/2.0b2.120519/jquery.infinitescroll.min.js"></script>
@@ -182,6 +185,11 @@
                                 </table>
                             <div class="my-postmeta">{block:Date}<a href="{Permalink}">{TimeAgo}</a>&nbsp; {/block:Date}<a href="{Permalink}" style="text-transform:lowercase;">{lang:Notes} ({NoteCount})</a></div>
                             {/block:Chat}
+                            {block:HasTags}
+                                {block:Tags}
+                                    <a href="{TagURL}" class="my-tag-link">#{Tag}</a>
+                                {/block:Tags}
+                            {/block:HasTags}
                            {block:PermalinkPage}
                                 {block:PermalinkPagination}
                                     <div class="navigation permalink">
