@@ -30,6 +30,7 @@
                 margin-top: 25%;
             }
             .my-title {
+                display: inline-block;
                 color: {color:Accent};
                 font-size: 15px;
                 padding-bottom: 10px;
@@ -84,6 +85,9 @@
             }
             .my-footer-div {
                 display: none;
+            }
+            .my-tag-link {
+                font-size: 10px;
             }
         </style>
         <!--Inifnite Scroll http://www.infinite-scroll.com/-->
@@ -181,7 +185,13 @@
                                 </table>
                             <div class="my-postmeta">{block:Date}<a href="{Permalink}">{TimeAgo}</a>&nbsp; {/block:Date}<a href="{Permalink}" style="text-transform:lowercase;">{lang:Notes} ({NoteCount})</a></div>
                             {/block:Chat}
+                            {block:HasTags}
+                                {block:Tags}
+                                    <a href="{TagURL}" class="my-tag-link">#{Tag}</a>
+                                {/block:Tags}
+                            {/block:HasTags}
                            {block:PermalinkPage}
+                                <hr />
                                 {block:PermalinkPagination}
                                     <div class="navigation permalink">
                                         <div class="links">
